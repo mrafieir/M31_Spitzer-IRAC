@@ -1,4 +1,4 @@
-; a script to read irac catalog, find coverage and completeness
+; a script to read irac catalog and to find the total coverage
 
 scale = 1.1999988 ; arcsec/pixel-side
 
