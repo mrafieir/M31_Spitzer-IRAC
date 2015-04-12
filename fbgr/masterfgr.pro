@@ -15,7 +15,13 @@ ymin=9d & ymax=16d
 xbin = 0.4d & ybin = 0.34d
 ; -------
 
-; paths to data files 
+; output file names
+case fgmode of
+0:output_name = 'CleanCat_WISE'
+1:output_name = 'CleanCat_Tri'
+end case
+
+; paths to input data files 
 dir_fg = '~/Projects/Andromeda/cats/fgr_input'
 dir_bg = '~/Projects/Andromeda/cats/Kim12/'
 
@@ -106,5 +112,5 @@ endfor
 irac1 = irac2wise(irac1, 1, 1)
 irac2 = irac2wise(irac2, 2, 1)
 
-forprint, ra, dec, irac2, irac1-irac2, probcol, text='CleanCat', /nocomment
+forprint, ra, dec, irac2, irac1-irac2, probcol, text=output_name, /nocomment
 END
