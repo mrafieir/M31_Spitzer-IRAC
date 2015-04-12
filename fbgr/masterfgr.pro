@@ -19,7 +19,7 @@ xbin = 0.4d & ybin = 0.34d
 case fgmode of
 0:output_name = 'CleanCat_WISE'
 1:output_name = 'CleanCat_Tri'
-end case
+endcase
 
 ; paths to input data files 
 dir_fg = '~/Projects/Andromeda/cats/fgr_input'
@@ -113,4 +113,36 @@ irac1 = irac2wise(irac1, 1, 1)
 irac2 = irac2wise(irac2, 2, 1)
 
 forprint, ra, dec, irac2, irac1-irac2, probcol, text=output_name, /nocomment
+
+; ****************************************************************
+; ********************  Background Galaxies **********************
+; ****************************************************************
+stop
+fitdeg = 2
+ymin=16d & ymax=19d & ybin=1d
+mag_hs = irac2ab(mag_hs, 2, 1)
+n_hs = n_hs * ascale ; # sources scaled by coverage
+par = poly_fit(mag_hs, alog(n_hs), fitdeg, chisq=chisq, /double) ; fit 2nd deg poly
+rchisq = chisq/(n_elements(mag_hs)-fitdeg-1) ; reduced chi^2
+
+; init loop
+y = ymin + ybin * findgen((ymax-ymin)/ybin+2) ; mag
+noy = n_elements(y) ; # bins covering the cmd
+probcol[*] = !values.f_nan ; assign NAN to all elements
+
+for j = 0, noy-2 do begin ; along mag axis
+ncounts = !values.f_nan	; init the variable ncounts (assuming a scalar-formated code)
+	; ------------------------------------------------
+	; -------- select/count sources in cmd bins ------
+	; ------------------------------------------------
+	; --- IRAC (full cat)
+        n_irac = squib(irac2, irac1-irac2, xmin, xmax, y[j], y[j+1], 0)
+	ind_irac = squib(irac2, irac1-irac2, xmin, xmax, y[j], y[j+1], 1)
+	; -----------
+	y_mid = (y[j]+y[j+1])/2 ; middle point
+	n_mid = par[0] + par[1] * y_mid + par[2] * y_mid^2d ; estimate bg count using the fit parameters
+	n_mid = exp(n_mid)
+	print, y_mid, n_mid, n_irac
+endfor
+
 END
