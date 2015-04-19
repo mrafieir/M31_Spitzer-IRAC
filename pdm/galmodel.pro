@@ -1,4 +1,4 @@
-dats_dir = '/Users/mrafieir/Projects/Andromeda/pros/starcount/dats/'
+dats_dir = '/Users/mrafieir/Projects/Andromeda/pros/strcount_input/dats/'
 readcol, dats_dir+'fscount.prt', r, f, a
 scale = 1.1999d
 d4 = dconv(r, scale)
