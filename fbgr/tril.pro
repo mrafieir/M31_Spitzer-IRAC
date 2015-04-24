@@ -1,4 +1,4 @@
-dir = '~/Projects/Andromeda/cats/fgr_input'
+dir = '../cats/fgr_input'
 readcol, dir+"/tirac", i1, i1s, i2, i2s
 readcol, dir+"/trg", t1, t2
 

@@ -22,8 +22,8 @@ case fgmode of
 endcase
 
 ; paths to input data files 
-dir_fg = '~/Projects/Andromeda/cats/fgr_input'
-dir_bg = '~/Projects/Andromeda/cats/Kim12/'
+dir_fg = '../cats/fgr_input'
+dir_bg = '../cats/Kim12/'
 
 ; ------------- read catalogs
 ; WISE fg samples, each covering 1 deg^2 area
