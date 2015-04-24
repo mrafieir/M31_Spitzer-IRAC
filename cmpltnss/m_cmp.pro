@@ -3,7 +3,7 @@ area = 3.8423337d ; total coverage obtained by './cmp_area.pro'
 bin = 1. ; magnitude bin size
 maglimit = 17.	; upper magnitude limit for the fit
 
-cat = mrdfits("~/Projects/Andromeda/cats/iracfits", 1) ; all irac sources
+cat = mrdfits("../cats/iracfits", 1) ; all irac sources
 mag1 = cat._3_6_ ; 4" aperture in Vega system
 mag1 = mag1[where(mag1 gt 0)]
 mag1_err = cat.col7 ; magnitude errors
