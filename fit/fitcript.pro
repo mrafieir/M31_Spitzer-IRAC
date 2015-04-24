@@ -2,14 +2,14 @@
 ; final 1-step-smoothed background
 
 ; read the map
-map_path = '~/Projects/Andromeda/NEW/clean_I1NS.fits'
+map_path = '../NEW/clean_I1NS.fits'
 map = mrdfits(map_path, 0, header)
 
 ; read the elliptical mask covering the galaxy
-ellmask = mrdfits('~/Projects/Andromeda/NEW/ellmask_I1NS.fits')
+ellmask = mrdfits('../NEW/ellmask_I1NS.fits')
 
 ; read the hits map and replace bad pixels with 0s
-hits = mrdfits("~/Projects/Andromeda/maps/I1_M31.NS.noCRs_mosaic_cov.fits")
+hits = mrdfits("../maps/I1_M31.NS.noCRs_mosaic_cov.fits")
 nans_ind = where(finite(hits, /nan) or hits le 0)
 hits[nans_ind] = 0d
 hits[where(hits gt 0)] = 1d
@@ -115,8 +115,8 @@ endfor
 ;finalbg = (mapx+map)/2d
 
 finalbg = map
-map = mrdfits("~/Projects/Andromeda/maps/I1_M31.NS.noCRs_mosaic.fits", 0, header)
+map = mrdfits("../maps/I1_M31.NS.noCRs_mosaic.fits", 0, header)
 
-fxwrite, '~/Projects/Andromeda/NEW/finalbg_I1NS.fits', header, float(finalbg)
+fxwrite, '../NEW/finalbg_I1NS.fits', header, float(finalbg)
 
 end

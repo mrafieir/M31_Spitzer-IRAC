@@ -1,14 +1,14 @@
-dats_dir = '/Users/mrafieir/Projects/Andromeda/pros/strcount_input/dats/'
+dats_dir = '../cats/strcount_input/strcount_input/dats/'
 readcol, dats_dir+'fscount.prt', r, f, a
 scale = 1.1999d
 d4 = dconv(r, scale)
 mag4 = -2.5*alog10(f/a)
 dmag4 = mag4*(2.5/alog(10)/sqrt(f))
 
-readcol, '~/Projects/Andromeda/pros/wedge/dat_prof/xn.dat', rx, fx, sfx, px
+readcol, '../cats/wedge_input/dat_prof/xn.dat', rx, fx, sfx, px
 readcol, './fitpar.dat', n, R_e, mu_e, R_d,  mu_0, alpha, mu_s, a_h, $
 	comment='#'
-readcol, '~/Projects/Andromeda/pros/wedge/dat_prof/yn.dat', ry, fy, sfy, py
+readcol, '../cats/wedge_input/dat_prof/yn.dat', ry, fy, sfy, py
 R_s = 30d ; kpc
 model_mag = dblarr(n_elements(rx), n_elements(n))
 for i = 0, n_elements(n)-1 do begin

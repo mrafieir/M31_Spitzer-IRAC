@@ -2,10 +2,10 @@
 ; background subracted map
 
 ; read raw map
-map = mrdfits("~/Projects/Andromeda/maps/I1_M31.NS.noCRs_mosaic.fits", 0, header)
+map = mrdfits("../maps/I1_M31.NS.noCRs_mosaic.fits", 0, header)
 
 ; read hits map
-hits = mrdfits("~/Projects/Andromeda/maps/I1_M31.NS.noCRs_mosaic_cov.fits")
+hits = mrdfits("../maps/I1_M31.NS.noCRs_mosaic_cov.fits")
 
 ; replace bad hits with 0s
 nans_ind = where(finite(hits, /nan) or hits le 0) 
@@ -13,7 +13,7 @@ hits[nans_ind] = 0d
 hits[where(hits gt 0)] = 1d
 
 ; read background model
-background = mrdfits('~/Projects/Andromeda/NEW/finalbg_I1NS.fits')
+background = mrdfits('../NEW/finalbg_I1NS.fits')
 ; replace all of the (above) bad-hit pixels with NANs
 background[nans_ind] = !Values.F_NAN
 ; smooth the background -- ignoring NANs
@@ -27,8 +27,8 @@ cleaned = (map - background_smooth) * hits
 ; replace NANs (again) with NANs
 cleaned[nans_ind] = !Values.F_NAN
 stop
-fxwrite, '~/Projects/Andromeda/NEW/I1NS_background_smooth.fits', header, $
+fxwrite, '../NEW/I1NS_background_smooth.fits', header, $
 	float(background_smooth)
-fxwrite, '~/Projects/Andromeda/I1NS_final_smooth.fits', header, float(cleaned)
+fxwrite, '../NEW/I1NS_final_smooth.fits', header, float(cleaned)
 
 end
