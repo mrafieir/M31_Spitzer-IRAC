@@ -15,7 +15,7 @@ readcol, './dat_prof/m31_irac1_mincutmag.prof', ry3, ymag3, ymag_err3
 ry3 = dconv(ry3, 1d)
 ry2 = dconv(ry2, 1d)
 
-dats_dir = '/Users/mrafieir/Projects/Andromeda/pros/starcount/dats/'
+dats_dir = '../cats/strcount_input/dats/'
 scale = 1.1999d
 
 readcol, dats_dir+'fscount.prt', r, f, a
@@ -142,13 +142,7 @@ charsize=1.3, /data, length=0.0, /box
 cgtext, -47, 26.5, 'Minor Axis'
 multiplot
 
-; -----------------------------
-
-
 multiplot, /reset
 device, /close
-
-
-
 
 end

@@ -10,16 +10,16 @@ centre = [10750, 1500] ; galactic center - pixel coordinates -- EW (major-axis) 
 
 ; ----- read image headers
 ; EW image
-ew_header = headfits('~/Projects/Andromeda/pr_maps/I1EW.fits')
+ew_header = headfits('../pr_maps/I1EW.fits')
 ; mosaic (made by MONTAGE)
-mos_header = headfits('/Users/mrafieir/Projects/Andromeda/mosaics/products/bgSubtracted/mosaic_area.fits')
+mos_header = headfits('../mosaics/products/bgSubtracted/mosaic_area.fits')
 
 ; area values in each radial bin
-readcol, "~/Projects/Andromeda/pros/starcount/dats/area.dat", rcount_area, area, format='d,d'
+readcol, "../cats/strcount_input/dats/area.dat", rcount_area, area, format='d,d'
 
 ; source catalog
 ;readcol, '/Users/mrafieir/Projects/Andromeda/pros/fgr/b13', $
-readcol, '~/Projects/Andromeda/pros/comm/fbgr/CleanCat_Tri.prt', $
+readcol, '../fbgr/CleanCat_Tri.prt', $
 ra, dec, irac2, colirac, probcol, format='d,d,d,d,d'
 
 ; constraints on magnitude

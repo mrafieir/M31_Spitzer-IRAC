@@ -21,17 +21,17 @@ p = 1d	; min number of pix at small radius
 
 
 case mode of
-0: map = mrdfits('~/Projects/Andromeda/pr_maps/I1EW.fits', 0, header)
-1: map = mrdfits('~/Projects/Andromeda/pr_maps/I1NS.fits', 0, header)
-;0: map = mrdfits('/Users/mrafieir/Projects/Andromeda/maps/I1_M31.EW.big_mosaic.fits', 0, header)
-;1: map = mrdfits('/Users/mrafieir/Projects/Andromeda/maps/I1_M31.NS.noCRs_mosaic.fits', 0, header)
+0: map = mrdfits('../pr_maps/I1EW.fits', 0, header)
+1: map = mrdfits('../pr_maps/I1NS.fits', 0, header)
+;0: map = mrdfits('../maps/I1_M31.EW.big_mosaic.fits', 0, header)
+;1: map = mrdfits('../maps/I1_M31.NS.noCRs_mosaic.fits', 0, header)
 endcase
 
 dims = size(map, /dim)
 
 ; masking peaks and misc
 if mode eq 1 then begin
-readcol, '~/Projects/Andromeda/pr_maps/I1NS_mask.dat', xi, xf, yi, yf, comment='#'
+readcol, '../pr_maps/I1NS_mask.dat', xi, xf, yi, yf, comment='#'
 map[xi:xf,yi:yf] = !values.f_nan
 endif
 

@@ -8,7 +8,7 @@ centre = [10750, 1500]  ; 'E-W'
 
 scale = 1.1999988d ; arcsec/pix
 
-map = mrdfits('~/Projects/Andromeda/pr_maps/I1EW.fits', 0, header)
+map = mrdfits('../pr_maps/I1EW.fits', 0, header)
 ;map = mrdfits('/Users/mrafieir/Projects/Andromeda/maps/I1_M31.EW.big_mosaic.fits', 0, header)
 dims = size(map, /dim)
 

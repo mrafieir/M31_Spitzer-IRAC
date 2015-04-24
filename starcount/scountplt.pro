@@ -9,7 +9,7 @@
 ;-----------------
 
 scale = 1.1999d ; pixel sscale in arcsec
-readcol, './dats/profile.dat', r, f, a
+readcol, '../cats/strcount_input/dats/profile.dat', r, f, a
 
 d = dconv(r, scale) ; convert pixels to kpc
 ;nsr = 1d/sqrt(f/a) 
