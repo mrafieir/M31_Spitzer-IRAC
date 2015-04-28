@@ -1,6 +1,7 @@
 ; a script to find the total coverage of the IRAC catalog based on 
 ; a `hit' mosaic that covers a larger area. MIN and MAX pixel coords 
-; of (each wing in) the catalog are used to constrain the mosaic area.
+; of (each wing in) the catalog are used to constrain the covered area
+; (by the catalog) in the mosaic.
 
 scale = 1.1999988 ; arcsec/pixel-side
 
