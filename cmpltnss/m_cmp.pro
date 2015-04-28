@@ -1,4 +1,5 @@
-; a script to find the completeness using a simple fit
+; a script to find the completeness by fitting a line to the 
+; number counts d(logN)/dm
 area = 3.8423337d ; total coverage obtained by './cmp_area.pro'
 bin = 1. ; magnitude bin size
 maglimit = 17.	; upper magnitude limit for the fit
@@ -9,7 +10,7 @@ mag1 = mag1[where(mag1 gt 0)]
 mag1_err = cat.col7 ; magnitude errors
 mag1_err = mag1_err[where(mag1 gt 0)]
 
-; make a histogram of magnitudes, scales by the total coverage
+; make a histogram of magnitudes and scale by the total coverage
 z = histogram(mag1, binsize=bin) / area
 x = findgen(n_elements(z)) + 1
 x = x * bin
