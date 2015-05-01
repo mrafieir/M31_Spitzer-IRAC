@@ -1,3 +1,8 @@
+; apply IRAC uncertainties on 
+; the trilegal stellar model
+; functions in use: `trilgen.pro'
+; © Masoud Rafiei Ravandi
+; <mrafiei.ravandi@gmail.com>
 dir = '../cats/fgr_input'
 readcol, dir+"/tirac", i1, i1s, i2, i2s
 readcol, dir+"/trg", t1, t2
