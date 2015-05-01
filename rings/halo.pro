@@ -1,8 +1,12 @@
 ; very basic Surface Brightness Profile
 ; by computing flux in annuli
+;
+; Functions in use: `sumann.pro', `ringprof.pro' from BUIE Library:
+; '../idllib/contrib/buie/ringprof.pro'
+; URL: http://www.astro.washington.edu/docs/idl/cgi-bin
+; 			/getpro/library30.html?RINGPROF
 
 ; galactic centre
-
 centre = [10750, 1500]  ; 'E-W'
 ;centre = [1250, 7749]  ; 'N-S'
 
