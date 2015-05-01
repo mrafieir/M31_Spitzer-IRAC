@@ -1,3 +1,7 @@
+; convert irac 3.6 and 4.5 um bands to WISE 1 and 2, and vice versa
+; irac to wise ---> mode = 0
+; wise to irac ---> mode = 1
+; © mrafiei.ravandi@gmail.com
 function irac2wise, inmag, channel, mode
 case mode of
 	0: begin
