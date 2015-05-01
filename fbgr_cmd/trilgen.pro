@@ -1,3 +1,8 @@
+; apply observed uncertainty values to 
+; a stellar model (with no uncertainty),
+; generated in the same waveband.
+; © Masoud Rafiei Ravandi 
+; <mrafiei.ravandi@gmail.com>
 function trilgen, i1, i1s, t1
 
 half_step = 0.1
