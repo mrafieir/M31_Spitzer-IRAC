@@ -15,7 +15,7 @@ readcol, './dat_prof/m31_irac1_mincutmag.prof', ry3, ymag3, ymag_err3
 ry3 = dconv(ry3, 1d)
 ry2 = dconv(ry2, 1d)
 
-dats_dir = '../cats/strcount_input/dats/'
+dats_dir = '~/Projects/project_80032/cats/strcount_input/dats/'
 scale = 1.1999d
 
 readcol, dats_dir+'fscount.prt', r, f, a

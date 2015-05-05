@@ -2,9 +2,9 @@
 ; containing median values of 100x100 pixels
 
 ; read the mask (0s and 1s)
-mask = mrdfits('../NEW/mask_I1NS.fits')
+mask = mrdfits('~/Projects/project_80032/NEW/mask_I1NS.fits')
 ; read the background map (i.e. raw map masked by the mask above)
-bg = mrdfits('../NEW/bg_I1NS.fits', 0, header)
+bg = mrdfits('~/Projects/project_80032/NEW/bg_I1NS.fits', 0, header)
 
 ; extract map dimensions 
 dims = size(bg, /dim)
@@ -61,7 +61,7 @@ endfor
 ; extra
 ; after inspecting the result, we find some areas that could be filled in
 ; with the mean of their neighbourhood..
-readcol, '../cats/mask_data/I1ns_extrapos.dat', $
+readcol, '~/Projects/project_80032/cats/mask_data/I1ns_extrapos.dat', $
 	xi, xf, yi, yf, comment='#'
 
 xi = fix(xi) & xf = fix(xf) & yi = fix(yi) & yf = fix(yf)
@@ -80,5 +80,5 @@ xi = fix(xi) & xf = fix(xf) & yi = fix(yi) & yf = fix(yf)
 print, z, mean_a
  endfor
 
-fxwrite, '../NEW/clean_I1NS.fits', header, float(bg)
+fxwrite, '~/Projects/project_80032/NEW/clean_I1NS.fits', header, float(bg)
 end

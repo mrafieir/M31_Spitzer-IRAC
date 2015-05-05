@@ -5,7 +5,7 @@ cdec = 41.268803
 bin = 13 & dr = 500 & mincut=4100
 centre = [10750, 1500]
 
-map = mrdfits('../mosaics/products/bgSubtracted/mosaic_area.fits', 0, header)
+map = mrdfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits', 0, header)
 
 ; initiating the centre
 adxy, header, cra, cdec, cx, cy
@@ -15,7 +15,7 @@ cx = fix(cx) & cy = fix(cy)
 ;refmap = dist(dims[0], dims[1])
 ;refmap = shift(refmap, cx, cy)
 ;fxwrite, "./inmaps/refmap.fits", header, float(refmap)
-refmap = mrdfits('../inmaps/refmap.fits')
+refmap = mrdfits('~/Projects/project_80032/inmaps/refmap.fits')
 
 ; radial dist
 r = findgen(bin)*dr + mincut

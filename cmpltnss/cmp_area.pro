@@ -6,22 +6,22 @@
 scale = 1.1999988 ; arcsec/pixel-side
 
 ; up-down hit map (i.e. along major axis)
-hits_ud = mrdfits("../maps/I1_M31.NS.noCRs_mosaic_cov.fits", 0, header)
+hits_ud = mrdfits("~/Projects/project_80032/maps/I1_M31.NS.noCRs_mosaic_cov.fits", 0, header)
 ; replace all bad hits with 0
 nans_ind = where(finite(hits_ud, /nan) or hits_ud le 0)
 hits_ud[nans_ind] = 0d
 
 ; left-right hit map (i.e. along minor axis)
-hits_lr = mrdfits("../maps/I1_M31.EW.big_mosaic_cov.fits")
+hits_lr = mrdfits("~/Projects/project_80032/maps/I1_M31.EW.big_mosaic_cov.fits")
 ; replace all bad hits with 0
 nans_ind = where(finite(hits_lr, /nan) or hits_lr le 0)
 hits_lr[nans_ind] = 0d
 
 ; read catalogs (selected from the full catalog using TOPCAT)
-up = mrdfits("../cats/iracfits_u", 1) 
-down = mrdfits("../cats/iracfits_d", 1)
-left = mrdfits("../cats/iracfits_l", 1)
-right = mrdfits("../cats/iracfits_r", 1)
+up = mrdfits("~/Projects/project_80032/cats/iracfits_u", 1) 
+down = mrdfits("~/Projects/project_80032/cats/iracfits_d", 1)
+left = mrdfits("~/Projects/project_80032/cats/iracfits_l", 1)
+right = mrdfits("~/Projects/project_80032/cats/iracfits_r", 1)
 
 ; sources in the up wing have wrong x & y coordinats
 ; so we use RA & DEC instead
