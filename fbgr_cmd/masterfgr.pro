@@ -8,7 +8,7 @@
 ; 1: tril model
 fgmode = 1
 ; total coverage in deg^2
-ascale = 3.8423337d; / 0.25d
+ascale = 3.8423337d; / 4d
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
 ymin=9d & ymax=16d
@@ -27,8 +27,8 @@ dir_bg = '~/Projects/project_80032/cats/Kim12/'
 
 ; ------------- read catalogs
 ; WISE fg samples, each covering 1 deg^2 area
-readcol, dir_fg+"/wf1", w1_fg1, w2_fg1, f='d,d', comm='#'
-readcol, dir_fg+"/wf2", w1_fg2, w2_fg2, f='d,d', comm='#'
+readcol, dir_fg+"/wf3", w1_fg1, w2_fg1, f='d,d', comm='#'
+readcol, dir_fg+"/wf4", w1_fg2, w2_fg2, f='d,d', comm='#'
 ; IRAC matched with WISE
 readcol, dir_fg+"/wise-irac", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
 ; IRAC (raw, cleaned, flags removed)
@@ -118,7 +118,7 @@ irac2 = irac2wise(irac2, 2, 1)
 fitdeg = 2
 ymin=16d & ymax=19d & ybin=1d
 mag_hs = irac2ab(mag_fls, 2, 1)
-n_hs = n_fls * ascale ; # sources scaled by coverage
+n_hs = n_fls * ascale; * 4d ; # sources scaled by coverage
 par = poly_fit(mag_hs, alog10(n_hs), fitdeg, chisq=chisq, /double) ; fit 2nd deg poly
 rchisq = chisq/(n_elements(mag_hs)-fitdeg-1) ; reduced chi^2
 

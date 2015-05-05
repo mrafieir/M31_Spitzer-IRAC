@@ -1,21 +1,21 @@
-readcol, './dat_prof/x.dat', rx, xmag, uxmag_err, lxmag_err
-readcol, './dat_prof/xn.dat', rx1, xmag1, uxmag_err1, lxmag_err1
-readcol, './dat_prof/m31_irac1_mincutmag.prof', rx2, xmag2, xmag_err2
-readcol, './dat_prof/m31_irac1_avgmag.prof', rx3, xmag3, xmag_err3
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/x.dat', rx, xmag, uxmag_err, lxmag_err
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/xn.dat', rx1, xmag1, uxmag_err1, lxmag_err1
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/m31_irac1_mincutmag.prof', rx2, xmag2, xmag_err2
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/m31_irac1_avgmag.prof', rx3, xmag3, xmag_err3
 
 ;rx2 = dconv(rx2, 1d)
 rx3 = dconv(rx3, 1d)
 rx2 = dconv(rx2, 1d)
 
-readcol, './dat_prof/y.dat', ry, ymag, uymag_err, lymag_err
-readcol, './dat_prof/yn.dat', ry1, ymag1, uymag_err1, lymag_err1
-readcol, './dat_prof/m31_irac1_avgmag.prof', ry2, ymag2, ymag_err2
-readcol, './dat_prof/m31_irac1_mincutmag.prof', ry3, ymag3, ymag_err3
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/y.dat', ry, ymag, uymag_err, lymag_err
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/yn.dat', ry1, ymag1, uymag_err1, lymag_err1
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/m31_irac1_avgmag.prof', ry2, ymag2, ymag_err2
+readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/m31_irac1_mincutmag.prof', ry3, ymag3, ymag_err3
 
 ry3 = dconv(ry3, 1d)
 ry2 = dconv(ry2, 1d)
 
-dats_dir = '~/Projects/project_80032/cats/strcount_input/dats/'
+dats_dir = '~/Projects/project_80032/starcount/'
 scale = 1.1999d
 
 readcol, dats_dir+'fscount.prt', r, f, a
@@ -23,25 +23,25 @@ d4 = dconv(r, scale)
 mag4 = -2.5*alog10(f/a)
 dmag4 = mag4*(2.5/alog(10)/sqrt(f))
 
-readcol, dats_dir+'p14-15.dat', r2, f2, a2
-d42 = dconv(r2, scale)
-mag42 = -2.5*alog10(f2/a2)
-dmag42 = mag42*(2.5/alog(10)/sqrt(f2))
+;readcol, dats_dir+'p14-15.dat', r2, f2, a2
+;d42 = dconv(r2, scale)
+;mag42 = -2.5*alog10(f2/a2)
+;dmag42 = mag42*(2.5/alog(10)/sqrt(f2))
 
-readcol, dats_dir+'p15-16.dat', r3, f3, a3
-d43 = dconv(r3, scale)
-mag43 = -2.5*alog10(f3/a3)
-dmag43 = mag43*(2.5/alog(10)/sqrt(f3))
+;readcol, dats_dir+'p15-16.dat', r3, f3, a3
+;d43 = dconv(r3, scale)
+;mag43 = -2.5*alog10(f3/a3)
+;dmag43 = mag43*(2.5/alog(10)/sqrt(f3))
 
-readcol, dats_dir+'p16-17.dat', r4, f4, a4
-d44 = dconv(r4, scale)
-mag44 = -2.5*alog10(f4/a4)
-dmag44 = mag44*(2.5/alog(10)/sqrt(f4))
+;readcol, dats_dir+'p16-17.dat', r4, f4, a4
+;d44 = dconv(r4, scale)
+;mag44 = -2.5*alog10(f4/a4)
+;dmag44 = mag44*(2.5/alog(10)/sqrt(f4))
 
-readcol, dats_dir+'p17-18.dat', r5, f5, a5
-d45 = dconv(r5, scale)
-mag45 = -2.5*alog10(f5/a5)
-dmag45 = mag45*(2.5/alog(10)/sqrt(f5))
+;readcol, dats_dir+'p17-18.dat', r5, f5, a5
+;d45 = dconv(r5, scale)
+;mag45 = -2.5*alog10(f5/a5)
+;dmag45 = mag45*(2.5/alog(10)/sqrt(f5))
 
 ;xplt = archplt(rx, xmag, uxmag_err, lxmag_err, rx1, xmag1, uxmag_err1, $
 ;lxmag_err1, rx2, xmag2, xmag_err2, rx3, xmag3, xmag_err3, d4, mag4, $
