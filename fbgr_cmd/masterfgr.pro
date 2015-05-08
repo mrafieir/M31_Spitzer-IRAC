@@ -3,6 +3,7 @@
 ; CMD system ==> [4.5] vs. [3.6]-[4.5]
 
 ; ------- input settings
+plot_set = 0 ; plot for bg galaxy counts
 ; case flags for fg type
 ; 0: wise samples
 ; 1: tril model
