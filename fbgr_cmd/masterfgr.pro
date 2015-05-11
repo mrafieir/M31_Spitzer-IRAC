@@ -6,9 +6,9 @@
 ; case flags for fg type
 ; 0: wise samples
 ; 1: tril model
-fgmode = 1
+fgmode = 0
 ; total coverage in deg^2
-ascale = 3.8423337d; / 4d
+ascale = 3.8423337d / 4d
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
 ymin=9d & ymax=16d
@@ -34,7 +34,7 @@ readcol, dir_fg+"/wise-irac", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
 ; IRAC (raw, cleaned, flags removed)
 readcol, dir_fg+"/irac_4cols", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
 ; TRIL fg model
-readcol, dir_fg+"/trilnew.prt/", tw1, tw2, f='d,d', comm='#'
+readcol, dir_fg+"/trilnew.prt", tw1, tw2, f='d,d', comm='#'
 ; bg galaxies from Kim et al. (2012)
 readcol, dir_bg+"SDWFS_45.dat", mag_sdwfs, n_sdwfs, f='d,d'
 readcol, dir_bg+"H-ATLAS+Spitzer_45.dat", mag_hs, n_hs, f='d,d'
@@ -118,7 +118,7 @@ irac2 = irac2wise(irac2, 2, 1)
 fitdeg = 2
 ymin=16d & ymax=19d & ybin=1d
 mag_hs = irac2ab(mag_fls, 2, 1)
-n_hs = n_fls * ascale; * 4d ; # sources scaled by coverage
+n_hs = n_fls * ascale * 4d ; # sources scaled by coverage
 par = poly_fit(mag_hs, alog10(n_hs), fitdeg, chisq=chisq, /double) ; fit 2nd deg poly
 rchisq = chisq/(n_elements(mag_hs)-fitdeg-1) ; reduced chi^2
 
@@ -161,7 +161,7 @@ forprint, ra[ind_star], dec[ind_star], irac2[ind_star], $
 irac1[ind_star]-irac2[ind_star], probcol[ind_star], text=output_name, /nocomment
 
 ; ------- plot the result
-@colors_kc
+;@colors_kc
 !p.font=-1
 !p.thick=3.8
 !x.thick=2.8
@@ -172,8 +172,8 @@ device, filename="bg-plot.eps", encapsulated=1, xsize=15.5, ysize=13.7
 cgerase & multiplot, [1,1], mxtitle='!6[!174.5!6]', mxtitoffset=1.1, $
 mytitle='!17dN/dm !6[!17num mag$\up-1$ deg$\up-2$!6]!17', mytitoffset=-1.5, $
 mxtitsize=1.5, mytitsize=1.5
-cgplot, y_mid, n_mid/ascale, psym=4, /ylog, aspect=1, yrange=[1d3,1d5], xrange=[16,20]
-cgplot, y_mid, n_irac/ascale, color=ltorange, /overplot
+cgplot, y_mid, n_mid/ascale/4d, psym=4, /ylog, aspect=1, yrange=[1d3,1d5], xrange=[16,20]
+cgplot, y_mid, n_irac/ascale/4d, color=ltorange, /overplot
 multiplot, /reset
 device, /close
 

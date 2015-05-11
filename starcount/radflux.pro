@@ -18,7 +18,7 @@ mos_header = headfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mo
 readcol, "~/Projects/project_80032/cats/strcount_input/dats/area.dat", rcount_area, area, format='d,d'
 
 ; source catalog
-readcol, '~/Projects/project_80032/cats/strcount_input/dats/CleanCat_Tri.prt', $
+readcol, '~/Projects/project_80032/fbgr_cmd/CleanCat_WISE.prt', $
 ra, dec, irac2, colirac, probcol, format='d,d,d,d,d'
 
 ; constraints on magnitude

@@ -1,6 +1,6 @@
 function dconv, rad, scale
 
-d = 788d ; Kpc
+d = 785d ; Kpc
 z = 0.00100d ; redshift
 d_a = 788d / (1d + z) ; angular diameter distance
 radian = 206265d ; arcsec in 1 radian

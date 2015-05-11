@@ -21,7 +21,7 @@ FUNCTION scount, file
 readcol, file, dfc, comment='#', format='d'
 
 ; for M31
-d = 788d ; kpc
+d = 785d ; kpc
 z = 0.00100d ; redshift
 d_a = d / (1d + z) ; angular diameter distance
 
