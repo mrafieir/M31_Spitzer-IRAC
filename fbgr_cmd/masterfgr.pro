@@ -8,12 +8,15 @@ plot_set = 0 ; plot for bg galaxy counts
 ; 0: wise samples
 ; 1: tril model
 fgmode = 0
+; flag for bg galx count analysis
+galxmode = 0
 ; total coverage in deg^2
-ascale = 3.8423337d / 4d
+ascale = 1.5353972d / 4d ; cat area irac cmd / wise sample
+xscale = 10.5d/10d ; sdwfs / tril sdwfs
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
-ymin=9d & ymax=16d
-xbin = 0.4d & ybin = 0.34d
+ymin=9d & ymax=18d
+xbin = 0.2d & ybin = 0.2d ; 4, 0.34
 ; -------
 
 ; output file names
@@ -28,21 +31,28 @@ dir_bg = '~/Projects/project_80032/cats/Kim12/'
 
 ; ------------- read catalogs
 ; WISE fg samples, each covering 1 deg^2 area
-readcol, dir_fg+"/wf3", w1_fg1, w2_fg1, f='d,d', comm='#'
-readcol, dir_fg+"/wf4", w1_fg2, w2_fg2, f='d,d', comm='#'
+readcol, dir_fg+"/wf3_2deg", w1_fg1, w1_fg1_sigma, w2_fg1, w2_fg1_sigma, f='d,d', comm='#'
+readcol, dir_fg+"/wf4_2deg", w1_fg2, w1_fg2_sigma, w2_fg2, w2_fg2_sigma, f='d,d', comm='#'
 ; IRAC matched with WISE
-readcol, dir_fg+"/wise-irac", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
+readcol, dir_fg+"/8xWISE_cor.err_cmd", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
+; IRAC cat area (used for trilegal cmd analysis only)
+readcol, dir_fg+"/catirac_uniq_cor.err_cmd", i1_xcat, i2_xcat, f='d,d', comm='#'
 ; IRAC (raw, cleaned, flags removed)
-readcol, dir_fg+"/irac_4cols", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
+readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
 ; TRIL fg model
-readcol, dir_fg+"/trilnew.prt", tw1, tw2, f='d,d', comm='#'
+readcol, dir_fg+"/TRIL_M31_CONV_cmd", tw1, tw2, f='d,d', comm='#'
+if galxmode then begin
+; sdwfs data
+readcol, dir_fg+"SDWFS_Ashby09", sdwfs1, sdwfs2, f='d,d', comm='#'
+; sdwfs model
+readcol, dir_fg+"TRIL_SDWFS_10deg_CONV", tsdwfs1, tsdwfs2, f='d,d', comm='#'
 ; bg galaxies from Kim et al. (2012)
 readcol, dir_bg+"SDWFS_45.dat", mag_sdwfs, n_sdwfs, f='d,d'
 readcol, dir_bg+"H-ATLAS+Spitzer_45.dat", mag_hs, n_hs, f='d,d'
 readcol, dir_bg+"fazio_45.dat", mag_fls, n_fls, f='d,d'
 readcol, dir_bg+"aeges_45.dat", mag_egs, n_egs, f='d,d'
 ; -------------
-
+endif
 ; convert irac to wise
 irac1 = irac2wise(irac1, 1, 0)
 irac2 = irac2wise(irac2, 2, 0)
@@ -71,42 +81,55 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	ind_irac = squib(irac2, irac1-irac2, x[i], x[i+step], y[j], y[j+1], 1)
 	; --- IRAC (matched w\ WISE)
 	nx = squib(w2_x, w1_x-w2_x, x[i], x[i+step], y[j], y[j+1], 0)
+	; --- IRAC (cat i.e. small area) for TRIL analysis ONLY
+	nxcat = squib(i2_xcat, i1_xcat-i2_xcat, x[i], x[i+step], y[j], y[j+1], 0)
 	; --- fg samples
 	nfg1 = squib(w2_fg1, w1_fg1-w2_fg1, x[i], x[i+step], y[j], y[j+1], 0)
 	nfg2 = squib(w2_fg2, w1_fg2-w2_fg2, x[i], x[i+step], y[j], y[j+1], 0)
 	n_wise = ascale * (nfg1+nfg2)/2d ; avg count scaled by total coverage
-	; --- fg TRIL MODEL	
+	; --- fg TRIL MODEL
 	n_tril = squib(tw2, tw1-tw2, x[i], x[i+step], y[j], y[j+1], 0)
-	; ------------------------------------------------ 
-	print, nfg1, nfg2, n_tril, nx
-
+	; ----------- SDWFS -------------------------- 
+	n_sdwfs = squib(sdwfs2, sdwfs1-sdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
+	n_tsdwfs = squib(tsdwfs2, tsdwfs1-tsdwfs2, x[i], x[i+step], y[j], y[j+1], 0)	
+	; ----------------------
+	print, nfg1, nfg2, n_tril, nxcat, nx
+	
 	case fgmode of
 	0: n_avg = n_wise	; use wise fg samples
 	1: n_avg = n_tril	; use tril galactic model
 	endcase
 
-	if (nx gt 0) and (n_avg ge 0) then begin	; any point source ?
+	if (nx gt 0) OR (n_avg ge 0) then begin	; any point source ?
+		case fgmode of
+		0: ndiff = nx - n_avg	; subtract off the bg from total
+		1: ndiff = nxcat - n_avg
+		endcase
 
-		ndiff = nx - n_avg	; subtract off the bg from total
 		if ndiff gt 0 then begin	; total>fg
 			;ncounts[i,j] = ndiff / nx ; prob of being M31
-			ncounts = ndiff / nx
+			case fgmode of
+			0: ncounts = ndiff / nx
+			1: ncounts = ndiff / nxcat
+			endcase
 			;if fgmode eq 0 then begin
 			; statistics for comparing the two wise fg samples 
 			;ns[i,j] = abs(nfg1-nfg2)/n_avg * ascale ; abs difference
 			;n_sigma[i,j] = sqrt(n_avg)/n_avg ; stdv
 			;endif
-		endif 
-		;else begin ; total<fg
-		if ndiff lt 0 then begin	;ncounts[i,j] = 0.
+		endif else begin
 			ncounts = 0.
-		endif;endelse
-
+		endelse
+	 
+		;else begin ; total<fg
+;		if ndiff lt 0 then begin	;ncounts[i,j] = 0.
+;			ncounts = 0.
+;		endif;endelse
 	endif
 	if (ind_irac[0] ne -1) then begin ; any available IRAC source ?
 	probcol[ind_irac] = ncounts ;ncounts[i,j] ; apply the prob values
 	endif
-
+	print, ncounts
 endfor
 endfor
 
@@ -114,6 +137,7 @@ endfor
 irac1 = irac2wise(irac1, 1, 1)
 irac2 = irac2wise(irac2, 2, 1)
 
+				if galxmode then begin
 ; ********************  Background Galaxies **********************
 ; ****************************************************************
 fitdeg = 2
@@ -149,7 +173,7 @@ ncounts = !values.f_nan	; init the variable ncounts (assuming a scalar-formated 
 	print, y_mid[j], n_mid[j], n_irac[j], midfactor
 	
 endfor
-
+				endif
 ; convert auto mags from ab to irac
 irac1_auto = irac2ab(irac1_auto, 1, 1)
 irac2_auto = irac2ab(irac2_auto, 2, 1)

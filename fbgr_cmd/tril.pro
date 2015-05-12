@@ -4,7 +4,7 @@
 ; © Masoud Rafiei Ravandi
 ; <mrafiei.ravandi@gmail.com>
 dir = '~/Dropbox/'
-readcol, dir+"/data", i1, i2, i1s, i2s
+readcol, dir+"/data", i1, i1s, i2, i2s
 readcol, dir+"/model", t1, t2
 
 r1 = trilgen(i1, i1s, t1)
