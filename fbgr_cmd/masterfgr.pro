@@ -89,9 +89,6 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	n_wise = ascale * (nfg1+nfg2)/2d ; avg count scaled by total coverage
 	; --- fg TRIL MODEL
 	n_tril = squib(tw2, tw1-tw2, x[i], x[i+step], y[j], y[j+1], 0)
-	; ----------- SDWFS -------------------------- 
-	n_sdwfs = squib(sdwfs2, sdwfs1-sdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
-	n_tsdwfs = squib(tsdwfs2, tsdwfs1-tsdwfs2, x[i], x[i+step], y[j], y[j+1], 0)	
 	; ----------------------
 	print, nfg1, nfg2, n_tril, nxcat, nx
 	
@@ -132,6 +129,16 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	print, ncounts
 endfor
 endfor
+
+; ---- sdwfs ---------------------->>>>>>>>>>>>>>
+;  
+;        n_sdwfs = squib(sdwfs2, sdwfs1-sdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
+;        n_tsdwfs = squib(tsdwfs2, tsdwfs1-tsdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
+;
+; ---------------------------------<<<<<<<<<<<<<<
+
+
+
 
 ; convert wise to irac
 irac1 = irac2wise(irac1, 1, 1)
