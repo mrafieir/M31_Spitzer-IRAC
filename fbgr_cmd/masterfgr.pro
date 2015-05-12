@@ -138,8 +138,6 @@ endfor
 ; ---------------------------------<<<<<<<<<<<<<<
 
 
-
-
 ; convert wise to irac
 irac1 = irac2wise(irac1, 1, 1)
 irac2 = irac2wise(irac2, 2, 1)
@@ -186,7 +184,7 @@ irac1_auto = irac2ab(irac1_auto, 1, 1)
 irac2_auto = irac2ab(irac2_auto, 2, 1)
 
 ; use auto mag to select round pts .. i.e stars
-ind_star = where( (abs(irac1_auto-irac1) lt 0.2) and (irac2 lt 18))
+ind_star = where( ((abs(irac1_auto-irac1) lt 0.2) and (irac2 le 15)) OR (irac2 gt 15) )
 
 ; all mags are in Vega System (i.e. IRAC)
 forprint, ra[ind_star], dec[ind_star], irac2[ind_star], $
