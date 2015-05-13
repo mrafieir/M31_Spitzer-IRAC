@@ -7,7 +7,7 @@ plot_set = 0 ; plot for bg galaxy counts
 ; case flags for fg type
 ; 0: wise samples
 ; 1: tril model
-fgmode = 0
+fgmode = 1
 ; flag for bg galx count analysis
 galxmode = 0
 ; total coverage in deg^2
@@ -96,8 +96,13 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	0: n_avg = n_wise	; use wise fg samples
 	1: n_avg = n_tril	; use tril galactic model
 	endcase
-
-	if (nx gt 0) OR (n_avg ge 0) then begin	; any point source ?
+	
+	case fgmode of
+	0: ncase = nx
+	1: ncase = nxcat
+	endcase
+	
+	if (ncase gt 0) OR (n_avg ge 0) then begin	; any point source ?
 		case fgmode of
 		0: ndiff = nx - n_avg	; subtract off the bg from total
 		1: ndiff = nxcat - n_avg
