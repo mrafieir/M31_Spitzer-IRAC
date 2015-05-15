@@ -129,7 +129,7 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
         	ncounts = ncounts * (n_sdwfs - n_tsdwfs) / n_sdwfs * xscale
 	endif
 
-	if (nacse le 0) OR (n_avg lt 0) OR (n_sdwfs-n_tsdwfs lt 0) then begin
+	if (ncase le 0) OR (n_avg lt 0) OR (n_sdwfs-n_tsdwfs lt 0) then begin
 		ncounts = 0d
 	endif
 
