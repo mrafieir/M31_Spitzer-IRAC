@@ -7,7 +7,7 @@ plot_set = 0 ; plot for bg galaxy counts
 ; case flags for fg type
 ; 0: wise samples
 ; 1: tril model
-fgmode = 1
+fgmode = 0
 ; flag for bg galx count analysis
 galxmode = 0
 ; total coverage in deg^2
@@ -20,7 +20,7 @@ xscale = 10.5d/10d ; sdwfs / tril sdwfs
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
 ymin=9d & ymax=18d
-xbin = 0.2d & ybin = 0.2d ; 4, 0.34
+xbin = 0.4d & ybin = 0.2d ; 4, 0.34
 ; -------
 
 ; output file names
@@ -45,10 +45,10 @@ readcol, dir_fg+"/catirac_uniq_cor.err_cmd", i1_xcat, i2_xcat, f='d,d', comm='#'
 readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
 ; TRIL fg model
 readcol, dir_fg+"/TRIL_M31_CONV_cmd", tw1, tw2, f='d,d', comm='#'
-if galxmode then begin
 ; sdwfs data & model
-readcol, dir_fg+"SDWFS_Ashby09", sdwfs1, sdwfs2, f='d,d', comm='#'
-readcol, dir_fg+"TRIL_SDWFS_10deg_CONV", tsdwfs1, tsdwfs2, f='d,d', comm='#'
+readcol, dir_fg+"/SDWFS_Ashby09", sdwfs1, sdwfs2, f='d,d', comm='#'
+readcol, dir_fg+"/TRIL_SDWFS_10deg_CONV", tsdwfs1, tsdwfs2, f='d,d', comm='#'
+if galxmode then begin
 ; bg galaxies from Kim et al. (2012)
 readcol, dir_bg+"SDWFS_45.dat", mag_sdwfs, n_sdwfs, f='d,d'
 readcol, dir_bg+"H-ATLAS+Spitzer_45.dat", mag_hs, n_hs, f='d,d'
@@ -126,7 +126,9 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 		endif else begin
 			ncounts = 0.
 		endelse
-	 
+	 if (y[j] ge 16) AND (n_sdwfs-n_tsdwfs gt 0) then begin
+		ncounts = ncounts * (n_sdwfs - n_tsdwfs) / n_sdwfs * xscale
+	 endif
 		;else begin ; total<fg
 ;		if ndiff lt 0 then begin	;ncounts[i,j] = 0.
 ;			ncounts = 0.
@@ -135,8 +137,7 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	if (ind_irac[0] ne -1) then begin ; any available IRAC source ?
 	probcol[ind_irac] = ncounts ;ncounts[i,j] ; apply the prob values
 	endif
-	print, n_avg, ncase, ncounts
-
+	print, n_sdwfs, n_tsdwfs, ncounts
 endfor
 endfor
 
