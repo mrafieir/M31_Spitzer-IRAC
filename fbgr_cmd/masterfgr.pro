@@ -11,7 +11,11 @@ fgmode = 1
 ; flag for bg galx count analysis
 galxmode = 0
 ; total coverage in deg^2
-ascale = 1.5353972d / 4d ; cat area irac cmd / wise sample
+case fgmode of
+0: ascale = 1.5353972d / 4d ; cat area iracXwise cmd / wise sample
+1: ascale = 1d ; cat area irac cmd / tril sample
+endcase
+
 xscale = 10.5d/10d ; sdwfs / tril sdwfs
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
@@ -42,9 +46,8 @@ readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto
 ; TRIL fg model
 readcol, dir_fg+"/TRIL_M31_CONV_cmd", tw1, tw2, f='d,d', comm='#'
 if galxmode then begin
-; sdwfs data
+; sdwfs data & model
 readcol, dir_fg+"SDWFS_Ashby09", sdwfs1, sdwfs2, f='d,d', comm='#'
-; sdwfs model
 readcol, dir_fg+"TRIL_SDWFS_10deg_CONV", tsdwfs1, tsdwfs2, f='d,d', comm='#'
 ; bg galaxies from Kim et al. (2012)
 readcol, dir_bg+"SDWFS_45.dat", mag_sdwfs, n_sdwfs, f='d,d'
@@ -89,9 +92,10 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	n_wise = ascale * (nfg1+nfg2)/2d ; avg count scaled by total coverage
 	; --- fg TRIL MODEL
 	n_tril = squib(tw2, tw1-tw2, x[i], x[i+step], y[j], y[j+1], 0)
-	; ----------------------
-	print, nfg1, nfg2, n_tril, nxcat, nx
-	
+	; ---------------------- SDWFS -------->>>>>>>>>>>>>>>>>>>>
+	n_sdwfs = squib(sdwfs2, sdwfs1-sdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
+	n_tsdwfs = squib(tsdwfs2, tsdwfs1-tsdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
+	; -------------------------------------<<<<<<<<<<<<<<<<<<<<
 	case fgmode of
 	0: n_avg = n_wise	; use wise fg samples
 	1: n_avg = n_tril	; use tril galactic model
@@ -131,17 +135,10 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	if (ind_irac[0] ne -1) then begin ; any available IRAC source ?
 	probcol[ind_irac] = ncounts ;ncounts[i,j] ; apply the prob values
 	endif
-	print, ncounts
+	print, n_avg, ncase, ncounts
+
 endfor
 endfor
-
-; ---- sdwfs ---------------------->>>>>>>>>>>>>>
-;  
-;        n_sdwfs = squib(sdwfs2, sdwfs1-sdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
-;        n_tsdwfs = squib(tsdwfs2, tsdwfs1-tsdwfs2, x[i], x[i+step], y[j], y[j+1], 0)
-;
-; ---------------------------------<<<<<<<<<<<<<<
-
 
 ; convert wise to irac
 irac1 = irac2wise(irac1, 1, 1)
