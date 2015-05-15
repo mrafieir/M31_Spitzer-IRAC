@@ -123,12 +123,16 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 			;ns[i,j] = abs(nfg1-nfg2)/n_avg * ascale ; abs difference
 			;n_sigma[i,j] = sqrt(n_avg)/n_avg ; stdv
 			;endif
-		endif else begin
-			ncounts = 0.
-		endelse
-	 if (y[j] ge 16) AND (n_sdwfs-n_tsdwfs gt 0) then begin
-		ncounts = ncounts * (n_sdwfs - n_tsdwfs) / n_sdwfs * xscale
-	 endif
+	endif
+
+	if (y[j] ge 16) AND (n_sdwfs-n_tsdwfs gt 0) then begin
+        	ncounts = ncounts * (n_sdwfs - n_tsdwfs) / n_sdwfs * xscale
+	endif
+
+	if (nacse le 0) OR (n_avg lt 0) OR (n_sdwfs-n_tsdwfs lt 0) then begin
+		ncounts = 0d
+	endif
+
 		;else begin ; total<fg
 ;		if ndiff lt 0 then begin	;ncounts[i,j] = 0.
 ;			ncounts = 0.
