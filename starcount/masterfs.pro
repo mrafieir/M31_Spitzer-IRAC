@@ -6,6 +6,8 @@
 ;	Masoud Rafiei Ravandi <mrafiei.ravandi@gmail.com>
 ; in the Interactive Programming Language (IDL)
 ; © 2015
+scale = 1.1999988 ; "/pix-side
+scale = (scale/3600)^2d ; sq. deg. / pix
 
 ; load maps
 map_ew = mrdfits('~/Projects/project_80032/maps/masterhit_EW.fits', 0, header_ew)
@@ -46,4 +48,7 @@ dy = fix(minmax(dy))
 map_ns[*, dy[1]:uy[0]] = 0d
 ; write the new NS map
 fxwrite, '~/Projects/project_80032/maps/hit_ns.fits', header_ns, float(map_ns)
+n1 = where(map_ew eq 1, count1)
+n2 = where(map_ns eq 1, count2)
+print, 'total area = ', '', (count1+count2)*scale, 'sq. deg'
 END
