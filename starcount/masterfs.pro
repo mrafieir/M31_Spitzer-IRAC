@@ -11,39 +11,39 @@
 map_ew = mrdfits('~/Projects/project_80032/maps/masterhit_EW.fits', 0, header_ew)
 map_ns = mrdfits('~/Projects/project_80032/maps/masterhit_NS.fits', 0, header_ns)
 
-
-
-
-; load the catalog and convert ra/dec to x/y
-;readcol, '~/Projects/project_80032/cats/strcount_input/dats/finalcmd', ra, dec, i2, color, i1, prob
-;adxy, header_ew, ra, dec, x_ew, y_ew
-;adxy, header_ns, ra, dec, x_ns, y_ns
-; convert x/y to integers for index manipulations
-;x_ew = fix(x_ew) & y_ew = fix(y_ew)
-;x_ns = fix(x_ns) & y_ns = fix(y_ns)
-
-; find the total coverage by the catalog over the maps --->>>>>>>>>>>>>
-;lx = fix(max(x_ew<8e3))
-;rx = fix(min(x_ew>1.35e4))
-
-;ly = fix(minmax(y_ew[where(x_ew<8e3)]>0))
-;ry = fix(minmax(y_ew[where(x_ew>1.35e4)]>0))
-
-;map_ew[lx:rx,*] = 0d ; between left and right wings
-
-;map_ew[0:lx,*] = 0d ; left wing
-;map_ew[0:lx,ly[1]:*] = 0d ; left wing
-
-;map_ew[rx:*,*] = 0d ; right wing
-;map_ew[rx:*,ry[1]:*] = 0d ; right wing
-
-;uy = min(y_ns>7750) ; up wing
-;dy = max(y_ns<7750) ; down wing
-
-;map_ns[*,dy:uy] = 0d ; between up and down wings
-; -------------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-; write new hit maps
+; ------------- >>>>>>>> East - West
+readcol, '~/Dropbox/left', ra, dec	; left wing
+adxy, header_ew, ra, dec, lx, ly
+; find end points
+lx = fix(minmax(lx))
+ly = fix(minmax(ly))
+; ---
+readcol, '~/Dropbox/right', ra, dec	; right wing
+adxy, header_ew, ra, dec, rx, ry
+rx = fix(minmax(rx))
+ry = fix(minmax(ry))
+; set bad pixs to zeros
+map_ew[lx[1]:rx[0], *] = 0d
+map_ew[lx[0]:lx[1], 0:ly[0]] = 0d
+map_ew[lx[0]:lx[1], ly[1]:*] = 0d
+map_ew[rx[0]:rx[1], 0:ry[0]] = 0d
+map_ew[rx[0]:rx[1], ry[1]:*] = 0d
+; write the new EW map
 fxwrite, '~/Projects/project_80032/maps/hit_ew.fits', header_ew, float(map_ew)
-fxwrite, '~/Projects/project_80032/maps/hit_ns.fits', header_ns, float(map_ns)
 
+; ------------- >>>>>>>> North - South
+readcol, '~/Dropbox/up', ra, dec
+adxy, header_ns, ra, dec, ux, uy
+; find end points
+ux = fix(minmax(ux))
+uy = fix(minmax(uy))
+; ---
+readcol, '~/Dropbox/down', ra, dec
+adxy, header_ns, ra, dec, dx, dy
+dx = fix(minmax(dx))
+dy = fix(minmax(dy))
+; set bad pix to zeros
+map_ns[*, dy[1]:uy[0]] = 0d
+; write the new NS map
+fxwrite, '~/Projects/project_80032/maps/hit_ns.fits', header_ns, float(map_ns)
 END
