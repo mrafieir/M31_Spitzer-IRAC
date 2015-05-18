@@ -7,7 +7,7 @@ plot_set = 0 ; plot for bg galaxy counts
 ; case flags for fg type
 ; 0: wise samples
 ; 1: tril model
-fgmode = 0
+fgmode = 1
 ; flag for bg galx count analysis
 galxmode = 0
 ; total coverage in deg^2
@@ -19,7 +19,7 @@ endcase
 xscale = 10.5d/10d ; sdwfs / tril sdwfs
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
-ymin=9d & ymax=18d
+ymin=9d & ymax=19d
 xbin = 0.4d & ybin = 0.2d ; 4, 0.34
 ; -------
 
@@ -106,12 +106,14 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	1: ncase = nxcat
 	endcase
 	
-	if (ncase gt 0) OR (n_avg ge 0) then begin	; any point source ?
-		case fgmode of
-		0: ndiff = nx - n_avg	; subtract off the bg from total
-		1: ndiff = nxcat - n_avg
-		endcase
+        case fgmode of
+        0: ndiff = nx - n_avg   ; subtract off the bg from total
+        1: ndiff = nxcat - n_avg
+        endcase
 
+	xdiff = (n_sdwfs - n_tsdwfs*xscale)
+
+	if (ncase gt 0) OR (n_avg ge 0) then begin	; any point source ?
 		if ndiff gt 0 then begin	; total>fg
 			;ncounts[i,j] = ndiff / nx ; prob of being M31
 			case fgmode of
@@ -123,21 +125,17 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 			;ns[i,j] = abs(nfg1-nfg2)/n_avg * ascale ; abs difference
 			;n_sigma[i,j] = sqrt(n_avg)/n_avg ; stdv
 			;endif
-	endif
+		endif
+	
+		if (y[j] ge 16) AND (xdiff gt 0) then begin
+        		ncounts = ncounts * xdiff / n_sdwfs
+		endif
 
-	if (y[j] ge 16) AND (n_sdwfs-n_tsdwfs gt 0) then begin
-        	ncounts = ncounts * (n_sdwfs - n_tsdwfs) / n_sdwfs * xscale
 	endif
-
-	if (ncase le 0) OR (n_avg lt 0) OR (n_sdwfs-n_tsdwfs lt 0) then begin
-		ncounts = 0d
-	endif
-
-		;else begin ; total<fg
-;		if ndiff lt 0 then begin	;ncounts[i,j] = 0.
-;			ncounts = 0.
-;		endif;endelse
-	endif
+	; IF(s) can be combined..
+       	if (y[j] lt 16) AND (n_avg lt 0) then ncounts = 0d
+	if (y[j] lt 16) AND (ndiff lt 0) then ncounts = 0d
+	if (y[j] lt 16) AND (ncase le 0) then ncounts = 0d
 	if (ind_irac[0] ne -1) then begin ; any available IRAC source ?
 	probcol[ind_irac] = ncounts ;ncounts[i,j] ; apply the prob values
 	endif
