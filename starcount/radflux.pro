@@ -5,36 +5,37 @@
 scale = 1.1999988; arcsec/pixel
 cra = 10.684709 ; galactic center - RA
 cdec = 41.268803 ; galactic center - DEC
-bin = 13 & dr = 500 & mincut = 4100 ; radial bin settings 
+bin = 16 & dr = 475 & mincut = 3000 ; radial bin settings 
 centre = [10750, 1500] ; galactic center - pixel coordinates -- EW (major-axis) image
 
 ; ----- read image headers
 ; EW image
-ew_header = headfits('~/Projects/project_80032/pr_maps/I1EW.fits')
+;ew_header = headfits('~/Projects/project_80032/pr_maps/I1EW.fits')
+ew_header = headfits('./refmap_ew.fits')
 ; mosaic (made by MONTAGE)
-mos_header = headfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits')
+;mos_header = headfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits')
 
 ; area values in each radial bin
-readcol, "~/Projects/project_80032/cats/strcount_input/dats/area.dat", rcount_area, area, format='d,d'
+readcol, "./area_ew.prt", rcount_area, area, format='d,d'
 
 ; source catalog
-readcol, '~/Projects/project_80032/fbgr_cmd/CleanCat_WISE.prt', $
-ra, dec, irac2, colirac, probcol, format='d,d,d,d,d'
+readcol, '~/Dropbox/finalcmd', $
+ra, dec, irac2, colirac, irac1, probcol, format='d,d,d,d,d'
 
 ; constraints on magnitude
-index = where( (irac2 gt 14) AND (irac2 le 18) )
-ra = ra[index] & dec = dec[index] & irac2 = irac2[index] & colirac = colirac[index]
-probcol = probcol[index]
+;index = where( (irac2 gt 14) AND (irac2 le 18) )
+;ra = ra[index] & dec = dec[index] & irac2 = irac2[index] & colirac = colirac[index]
+;probcol = probcol[index]
 
 ; convert ra/dec to pixel coordinates on mosaic
-adxy, mos_header, ra, dec, x, y
+adxy, ew_header, ra, dec, x, y
 x = fix(x) & y = fix(y)
 
 ; convert pixel coordinates (center in EW image) to ra/dec
 xyad, ew_header, centre[0], centre[1], cra, cdec
 
 ; convert ra/dec (center in EW image) to pixel coordinates on mosaic
-adxy, mos_header, cra, cdec, cx, cy
+adxy, ew_header, cra, cdec, cx, cy
 cx = fix(cx) & cy = fix(cy)
 
 ; radial dist from the center on mosaic
