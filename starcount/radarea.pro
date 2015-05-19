@@ -6,7 +6,7 @@ bin = 16 & dr = 475 & mincut=3000
 centre = [10750, 1500]
 
 ;map = mrdfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits', 0, header)
-map = mrdfits('~/Projects/project_80032/maps/hit_ew.fits', 0, header)
+map = mrdfits('~/Projects/project_80032/maps/hit_ns.fits', 0, header)
 dims = fix(size(map, /dim))
 
 ; initiating the centre
@@ -16,7 +16,7 @@ cx = fix(cx) & cy = fix(cy)
 ; making a ref map for radial dist
 refmap = dist(dims[0], dims[1])
 refmap = shift(refmap, cx, cy)
-fxwrite, "./refmap_ew.fits", header, float(refmap)
+fxwrite, "./refmap_ns.fits", header, float(refmap)
 ;refmap = mrdfits('~/Projects/project_80032/inmaps/refmap.fits')
 
 ; radial dist
@@ -34,5 +34,5 @@ print, 'loop, ', bin-2-i
 endfor
 area = area[0:bin-2]
 
-forprint, rcount, area, text="area_ew", /nocomment
+forprint, rcount, area, text="area_ns", /nocomment
 END
