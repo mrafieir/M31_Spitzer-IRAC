@@ -2,7 +2,7 @@
 scale = 1.1999988 ; arcsec/pixel
 cra = 10.684709
 cdec = 41.268803
-bin = 16 & dr = 500 & mincut=3000
+bin = 16 & dr = 475 & mincut=3000
 centre = [10750, 1500]
 
 ;map = mrdfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits', 0, header)
@@ -34,5 +34,5 @@ print, 'loop, ', bin-2-i
 endfor
 area = area[0:bin-2]
 
-forprint, rcount, area, text="./dats/area_ew.dat", /nocomment
+forprint, rcount, area, text="area_ew", /nocomment
 END
