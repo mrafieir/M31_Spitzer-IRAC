@@ -4,8 +4,7 @@
 
 ; code is written by,
 ;	Masoud Rafiei Ravandi <mrafiei.ravandi@gmail.com>
-; in the Interactive Programming Language (IDL)
-; © 2015
+
 scale = 1.1999988 ; "/pix-side
 scale = (scale/3600)^2d ; sq. deg. / pix
 
