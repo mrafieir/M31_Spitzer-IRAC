@@ -23,6 +23,9 @@ d4 = dconv(r, scale)
 mag4 = -2.5*alog10(f/a)
 dmag4 = mag4*(2.5/alog(10)/sqrt(f))
 
+mag4shift = 19
+
+
 ;readcol, dats_dir+'p14-15.dat', r2, f2, a2
 ;d42 = dconv(r2, scale)
 ;mag42 = -2.5*alog10(f2/a2)
@@ -87,7 +90,7 @@ symsize=ss, color='slate gray', xrange=[0.003,60], yrange=[28,10], $
 /xlog, /err_clip
 cgplot, rx1, xmag1, err_ylow=lxmag_err1, err_yhigh=uxmag_err1, $
 psym=4, symsize=ss, color='spring green', /overplot
-cgplot, d4, mag4+16.2, psym=4, symsize=ss, color='orange', /overplot, $
+cgplot, d4, mag4+mag4shift, psym=4, symsize=ss, color='orange', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 ;cgplot, d42, mag42+7.2, psym=-2, symsize=ss, color='blue', /overplot
 ;cgplot, d43, mag43+7.2, psym=-2, symsize=ss, color='pink', /overplot
@@ -104,7 +107,7 @@ cgplot, rx, xmag, err_ylow=lxmag_err, err_yhigh=uxmag_err, psym=4, $
 symsize=ss, color='slate gray', xrange=[-1.5,47], yrange=[28,10], /err_clip
 cgplot, rx1, xmag1, err_ylow=lxmag_err1, err_yhigh=uxmag_err1, $
 psym=4, symsize=ss, color='spring green', /overplot
-cgplot, d4, mag4+16.2, psym=4, symsize=ss, color='orange', /overplot, $
+cgplot, d4, mag4+mag4shift, psym=4, symsize=ss, color='orange', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 
 ;cgplot, d42, mag42+7.2, psym=-2, symsize=ss, color='blue', /overplot
@@ -126,7 +129,7 @@ symsize=ss, color='slate gray', xrange=[0.003,60], yrange=[28,10], $
 /xlog, /err_clip
 cgplot, ry1, ymag1, err_ylow=lymag_err1, err_yhigh=uymag_err1, $
 psym=4, symsize=ss, color='spring green', /overplot
-cgplot, d4, mag4+16.2, psym=4, symsize=ss, color='orange', /overplot, $
+cgplot, d4, mag4+mag4shift, psym=4, symsize=ss, color='orange', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 multiplot
 
@@ -134,7 +137,7 @@ cgplot, ry, ymag, err_ylow=lymag_err, err_yhigh=uymag_err, psym=4, $
 symsize=ss, color='slate gray', xrange=[-1.5,47], yrange=[28,10], /err_clip
 cgplot, ry1, ymag1, err_ylow=lymag_err1, err_yhigh=uymag_err1, $
 psym=4, symsize=ss, color='spring green', /overplot
-cgplot, d4, mag4+16.2, psym=4, symsize=ss, color='orange', /overplot, $
+cgplot, d4, mag4+mag4shift, psym=4, symsize=ss, color='orange', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 cglegend, title=['SE (Wedge cut)','NW (Wedge cut)','Radial (Star count)'], psym=[4,4,4], $
 color=['spring green','slate gray','orange'], location=[7.7,10.7], vspace=2.0, $

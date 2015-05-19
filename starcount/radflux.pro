@@ -12,11 +12,12 @@ centre = [10750, 1500] ; galactic center - pixel coordinates -- EW (major-axis) 
 ; EW image
 ;ew_header = headfits('~/Projects/project_80032/pr_maps/I1EW.fits')
 ew_header = headfits('./refmap_ew.fits')
+ns_header = headfits('./refmap_ns.fits')
 ; mosaic (made by MONTAGE)
 ;mos_header = headfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits')
 
 ; area values in each radial bin
-readcol, "./area_ew.prt", rcount_area, area, format='d,d'
+readcol, "./area_ns.prt", rcount_area, area, format='d,d'
 
 ; source catalog
 readcol, '~/Dropbox/finalcmd', $
@@ -28,14 +29,14 @@ ra, dec, irac2, colirac, irac1, probcol, format='d,d,d,d,d'
 ;probcol = probcol[index]
 
 ; convert ra/dec to pixel coordinates on mosaic
-adxy, ew_header, ra, dec, x, y
+adxy, ns_header, ra, dec, x, y
 x = fix(x) & y = fix(y)
 
 ; convert pixel coordinates (center in EW image) to ra/dec
 xyad, ew_header, centre[0], centre[1], cra, cdec
 
 ; convert ra/dec (center in EW image) to pixel coordinates on mosaic
-adxy, ew_header, cra, cdec, cx, cy
+adxy, ns_header, cra, cdec, cx, cy
 cx = fix(cx) & cy = fix(cy)
 
 ; radial dist from the center on mosaic
@@ -63,6 +64,6 @@ if array_equal(rcount_area, rcount) then begin
 
 endif else print, 'rcount arrays must be equal!'
 ; print the result into file
-forprint, rcount, flux, area, text="fscount", /nocomment
+forprint, rcount, flux, area, text="fscount_ns", /nocomment
 
 END
