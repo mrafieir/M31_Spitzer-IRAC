@@ -1,9 +1,11 @@
-dats_dir = '~/Projects/project_80032/cats/strcount_input/dats/'
+dats_dir = '~/Projects/project_80032/starcount/'
 readcol, dats_dir+'fscount.prt', r, f, a
 scale = 1.1999d
 d4 = dconv(r, scale)
 mag4 = -2.5*alog10(f/a)
 dmag4 = mag4*(2.5/alog(10)/sqrt(f))
+
+mag4shift = 19
 
 readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/xn.dat', rx, fx, sfx, px
 readcol, './fitpar.dat', n, R_e, mu_e, R_d,  mu_0, alpha, mu_s, a_h, $
@@ -39,7 +41,7 @@ cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', $
 err_yhigh=sfx, err_ylow=sfx, yrange=[33,12], xrange=[0.003,60], /xlog
 cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
 err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
-cgplot, d4, mag4+(model_mag[27,0]-fx[27])+16.2, psym=4, color='red', /overplot, $
+cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
 cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
@@ -61,7 +63,7 @@ cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', $
 err_yhigh=sfx, err_ylow=sfx, yrange=[33,12], xrange=[-1.5,50]
 cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
 err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
-cgplot, d4, mag4+(model_mag[27,0]-fx[27])+16.2, psym=4, color='red', /overplot, $
+cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
 cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
