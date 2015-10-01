@@ -40,9 +40,9 @@ readcol, dir_fg+"/wf4_2deg", w1_fg2, w1_fg2_sigma, w2_fg2, w2_fg2_sigma, f='d,d'
 ; IRAC matched with WISE
 readcol, dir_fg+"/8xWISE_cor.err_cmd", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
 ; IRAC cat area (used for trilegal cmd analysis only)
-readcol, dir_fg+"/catirac_uniq_cor.err_cmd", i1_xcat, i2_xcat, f='d,d', comm='#'
+readcol, dir_fg+"/catirac_uniq_cor.err_cmd", i1_xcat, i2_xcat, rgc_xcat, f='d,d,d', comm='#'
 ; IRAC (raw, cleaned, flags removed)
-readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
+readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, rgc, f='d,d,d,d,d,d,d', comm='#'
 ; TRIL fg model
 readcol, dir_fg+"/TRIL_M31_CONV_cmd", tw1, tw2, f='d,d', comm='#'
 ; sdwfs data & model
@@ -192,8 +192,8 @@ irac2_auto = irac2ab(irac2_auto, 2, 1)
 ind_star = where( ((abs(irac1_auto-irac1) lt 0.2) and (irac2 le 15)) OR (irac2 gt 15) )
 
 ; all mags are in Vega System (i.e. IRAC)
-forprint, ra[ind_star], dec[ind_star], irac2[ind_star], $
-irac1[ind_star]-irac2[ind_star], probcol[ind_star], text=output_name, /nocomment
+forprint, ra[ind_star], dec[ind_star], irac1[ind_star], $
+irac2[ind_star], probcol[ind_star], rgc[ind_star], text=output_name, /nocomment
 
 if plot_set then begin
 	; ------- plot the result
