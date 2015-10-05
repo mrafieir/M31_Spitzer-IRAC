@@ -20,7 +20,7 @@ xscale = 10.5d/10d ; sdwfs / tril sdwfs
 ; constraints on cmd bins
 xmin=-6d & xmax=6d
 ymin=9d & ymax=19d
-xbin = 0.4d & ybin = 0.2d ; 4, 0.34
+xbin = 0.2d & ybin = 0.2d ; 4, 0.34
 ; -------
 
 ; output file names
@@ -39,12 +39,10 @@ readcol, dir_fg+"/wf3_2deg", w1_fg1, w1_fg1_sigma, w2_fg1, w2_fg1_sigma, f='d,d'
 readcol, dir_fg+"/wf4_2deg", w1_fg2, w1_fg2_sigma, w2_fg2, w2_fg2_sigma, f='d,d', comm='#'
 ; IRAC matched with WISE
 readcol, dir_fg+"/8xWISE_cor.err_cmd", i1_x, i2_x, w1_x, w2_x, f='d,d', comm='#'
-; IRAC cat area (used for trilegal cmd analysis only)
-readcol, dir_fg+"/catirac_uniq_cor.err_cmd", i1_xcat, i2_xcat, rgc_xcat, f='d,d,d', comm='#'
 ; IRAC (raw, cleaned, flags removed)
-readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, rgc, f='d,d,d,d,d,d,d', comm='#'
+readcol, dir_fg+"/IRAC_M31_UNIQ_cor.err", irac1_auto, irac1, ra, dec, irac2_auto, irac2, f='d,d,d,d,d,d', comm='#'
 ; TRIL fg model
-readcol, dir_fg+"/TRIL_M31_CONV_cmd", tw1, tw2, f='d,d', comm='#'
+readcol, dir_fg+"/TRIL_M31_CONV", tw1, tw2, f='d,d', comm='#'
 ; sdwfs data & model
 readcol, dir_fg+"/SDWFS_Ashby09", sdwfs1, sdwfs2, f='d,d', comm='#'
 readcol, dir_fg+"/TRIL_SDWFS_10deg_CONV", tsdwfs1, tsdwfs2, f='d,d', comm='#'
@@ -56,9 +54,12 @@ readcol, dir_bg+"fazio_45.dat", mag_fls, n_fls, f='d,d'
 readcol, dir_bg+"aeges_45.dat", mag_egs, n_egs, f='d,d'
 ; -------------
 endif
+
+if fgmode eq 0 then begin
 ; convert irac to wise
 irac1 = irac2wise(irac1, 1, 0)
 irac2 = irac2wise(irac2, 2, 0)
+endif
 
 ; ------------- initialize arrays for the following loop
 x = xmin + xbin * findgen((xmax-xmin)/xbin+2) ; color
@@ -84,8 +85,6 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	ind_irac = squib(irac2, irac1-irac2, x[i], x[i+step], y[j], y[j+1], 1)
 	; --- IRAC (matched w\ WISE)
 	nx = squib(w2_x, w1_x-w2_x, x[i], x[i+step], y[j], y[j+1], 0)
-	; --- IRAC (cat i.e. small area) for TRIL analysis ONLY
-	nxcat = squib(i2_xcat, i1_xcat-i2_xcat, x[i], x[i+step], y[j], y[j+1], 0)
 	; --- fg samples
 	nfg1 = squib(w2_fg1, w1_fg1-w2_fg1, x[i], x[i+step], y[j], y[j+1], 0)
 	nfg2 = squib(w2_fg2, w1_fg2-w2_fg2, x[i], x[i+step], y[j], y[j+1], 0)
@@ -103,12 +102,12 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 	
 	case fgmode of
 	0: ncase = nx
-	1: ncase = nxcat
+	1: ncase = n_irac
 	endcase
 	
         case fgmode of
         0: ndiff = nx - n_avg   ; subtract off the bg from total
-        1: ndiff = nxcat - n_avg
+        1: ndiff = n_irac - n_avg
         endcase
 
 	xdiff = (n_sdwfs - n_tsdwfs*xscale)
@@ -118,7 +117,7 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 			;ncounts[i,j] = ndiff / nx ; prob of being M31
 			case fgmode of
 			0: ncounts = ndiff / nx
-			1: ncounts = ndiff / nxcat
+			1: ncounts = ndiff / n_irac
 			endcase
 			;if fgmode eq 0 then begin
 			; statistics for comparing the two wise fg samples 
@@ -143,10 +142,11 @@ ncounts = 1d; !values.f_nan	; init the variable ncounts (assuming a scalar-forma
 endfor
 endfor
 
+if fgmode eq 0 then begin
 ; convert wise to irac
 irac1 = irac2wise(irac1, 1, 1)
 irac2 = irac2wise(irac2, 2, 1)
-
+endif
 				if galxmode then begin
 ; ********************  Background Galaxies **********************
 ; ****************************************************************
@@ -192,8 +192,7 @@ irac2_auto = irac2ab(irac2_auto, 2, 1)
 ind_star = where( ((abs(irac1_auto-irac1) lt 0.2) and (irac2 le 15)) OR (irac2 gt 15) )
 
 ; all mags are in Vega System (i.e. IRAC)
-forprint, ra[ind_star], dec[ind_star], irac1[ind_star], $
-irac2[ind_star], probcol[ind_star], rgc[ind_star], text=output_name, /nocomment
+forprint, ra[ind_star], dec[ind_star], irac1[ind_star], irac2[ind_star], probcol[ind_star], text=output_name, /nocomment
 
 if plot_set then begin
 	; ------- plot the result
