@@ -39,7 +39,7 @@ def correct_rgc(glx_ctr=SkyCoord('00h42m44.33s +41d16m07.5s'),
         projected Galactocentric distance(s) for coordinate point(s).
     """
     # read the catalog
-    catab = Table.read('/Users/seatoskyhw/Projects/project_80032/cmpltnss/left-right', format='ascii.no_header')
+    catab = Table.read('/Users/seatoskyhw/Projects/project_80032/cmpltnss/cats/tril_ns', format='ascii.no_header')
     ra, dec = catab['col1'], catab['col2']
     coord = SkyCoord(ra=ra*u.degree, dec = dec*u.degree)
 
