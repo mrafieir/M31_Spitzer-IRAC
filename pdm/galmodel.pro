@@ -1,18 +1,13 @@
-dats_dir = '~/Projects/project_80032/starcount/'
-readcol, dats_dir+'fscount.prt', r, f, a
-scale = 1.1999d
-d4 = dconv(r, scale)
-mag4 = -2.5*alog10(f/a)
-dmag4 = mag4*(2.5/alog(10)/sqrt(f))
-
 mag4shift = 19
-
-readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/xn.dat', rx, fx, sfx, px
-readcol, './fitpar.dat', n, R_e, mu_e, R_d,  mu_0, alpha, mu_s, a_h, $
-	comment='#'
-readcol, '~/Projects/project_80032/cats/wedge_input/dat_prof/yn.dat', ry, fy, sfy, py
 R_s = 30d ; kpc
+scale = 60d / 206265d * 785d
+
+readcol, '~/Projects/project_80032/flx.prt', rx, fx, sfx
+rx = rx * scale
+
+readcol, './fitpar.dat', n, R_e, mu_e, R_d,  mu_0, alpha, mu_s, a_h, comment='#'
 model_mag = dblarr(n_elements(rx), n_elements(n))
+
 for i = 0, n_elements(n)-1 do begin
 	bpar = [mu2i(mu_e[i]), R_e[i], n[i]]
 	dpar = [mu2i(mu_0[i]), R_d[i]]
@@ -23,9 +18,10 @@ for i = 0, n_elements(n)-1 do begin
 	halo = powhalo(rx, hpar)
 	model = bulge + disk + halo
 
-	model_mag[*, i] = i2mu(model)
+	forprint, rx/scale, i2mu(model), text=string(i), /nocomm
 endfor
 
+stop
 @colors_kc
 !p.font=-1
 !p.thick=5.8
@@ -39,8 +35,11 @@ mytitle='!7l !6[!17mag arcsec$\up-2$!6]!17', mxtitsize=2, mytitsize=2
 
 cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', $
 err_yhigh=sfx, err_ylow=sfx, yrange=[33,12], xrange=[0.003,60], /xlog
+
 cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
 err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
+
+
 cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
 err_ylow=dmag4, err_yhigh=dmag4
 cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
