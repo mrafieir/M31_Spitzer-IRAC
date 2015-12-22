@@ -3,10 +3,10 @@
 ;	<mrafiei.ravandi@gmail.com>
 ; -----
 scale = 1.1999988; arcsec/pixel
-cra = 10.684709 ; galactic center - RA
-cdec = 41.268803 ; galactic center - DEC
+cra = 10.6833 ; galactic center - RA
+cdec = 41.2689 ; galactic center - DEC
 bin = 16 & dr = 475 & mincut = 3000 ; radial bin settings 
-centre = [10750, 1500] ; galactic center - pixel coordinates -- EW (major-axis) image
+;centre = [10750, 1500] ; galactic center - pixel coordinates -- EW (major-axis) image
 
 ; ----- read image headers
 ; EW image
@@ -20,7 +20,7 @@ ns_header = headfits('./refmap_ns.fits')
 readcol, "./area_ns.prt", rcount_area, area, format='d,d'
 
 ; source catalog
-readcol, '~/Dropbox/finalcmd', $
+readcol, './finalcmd', $
 ra, dec, irac2, colirac, irac1, probcol, format='d,d,d,d,d'
 
 ; constraints on magnitude

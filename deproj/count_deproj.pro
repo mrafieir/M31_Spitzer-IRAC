@@ -4,12 +4,18 @@
 map1 = mrdfits("./inmaps/catcov_rgc_ew.fits", 0, head1)
 map2 = mrdfits("./inmaps/catcov_rgc_ns.fits", 0, head2)
 
-ermode = 2
-outputname = "scount_down"
+ermode = 0
+outputname = "scount"
 ;map1 = mrdfits("./inmaps/catcov_rgc_ew_p.fits", 0, head1)
 ;map2 = mrdfits("./inmaps/catcov_rgc_ns_p.fits", 0, head2)
 
 readcol, "./finaloutput.prt", ra, dec, irac1, irac2, pv0, pv, rgc, drgc, format='d,d,d,d,d,d,d,d', comm='#'
+
+ind = where(irac1 gt 14.1)
+ra = ra[ind] & dec=dec[ind]
+irac1=irac1[ind] & irac2 = irac2[ind]
+pv0=pv0[ind] & pv=pv[ind]
+rgc=rgc[ind] & drgc=drgc[ind]
 
 ;drgc = rgc
 

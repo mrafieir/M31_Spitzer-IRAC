@@ -1,12 +1,10 @@
 ; compute area in radial bins
-scale = 1.1999988 ; arcsec/pixel
-cra = 10.684709
-cdec = 41.268803
+scale = 1.1999988d ; arcsec/pixel
+cra = 10.6833d
+cdec = 41.2689d
 bin = 16 & dr = 475 & mincut=3000
-centre = [10750, 1500]
 
-;map = mrdfits('~/Projects/project_80032/mosaics/products/bgSubtracted/mosaic_area.fits', 0, header)
-map = mrdfits('~/Projects/project_80032/maps/hit_ns.fits', 0, header)
+map = mrdfits('./hit_ns.fits', 0, header)
 dims = fix(size(map, /dim))
 
 ; initiating the centre
@@ -16,7 +14,7 @@ cx = fix(cx) & cy = fix(cy)
 ; making a ref map for radial dist
 refmap = dist(dims[0], dims[1])
 refmap = shift(refmap, cx, cy)
-fxwrite, "./refmap_ns.fits", header, float(refmap)
+;fxwrite, "./refmap_ns.fits", header, float(refmap)
 ;refmap = mrdfits('~/Projects/project_80032/inmaps/refmap.fits')
 
 ; radial dist

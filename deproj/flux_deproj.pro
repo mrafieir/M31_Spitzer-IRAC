@@ -9,10 +9,17 @@ bgmode = 0
 
 outputname = "flx"
 
-map1 = mrdfits("./inmaps/I1EW.fits", 0, head1)
-map2 = mrdfits("./inmaps/I1NS.fits", 0, head2)
-mapbg1 = mrdfits("./inmaps/ewbg.fits", 0, headbg1)
-mapbg2 = mrdfits("./inmaps/nsbg.fits", 0, headbg2)
+;map1 = mrdfits("./inmaps/I1EW.fits", 0, head1)
+;map2 = mrdfits("./inmaps/I1NS.fits", 0, head2)
+;mapbg1 = mrdfits("./inmaps/ewbg.fits", 0, headbg1)
+;mapbg2 = mrdfits("./inmaps/nsbg.fits", 0, headbg2)
+
+
+map1 = mrdfits("~/Projects/project_80032/NEW/45maps/I1EW_final_smooth.fits", 0, head1)
+map2 = mrdfits("~/Projects/project_80032/NEW/45maps/I1NS_final_smooth.fits", 0, head2)
+mapbg1 = mrdfits("~/Projects/project_80032/NEW/45maps/I1EW_background_smooth.fits", 0, headbg1)
+mapbg2 = mrdfits("~/Projects/project_80032/NEW/45maps/I1NS_background_smooth.fits", 0, headbg2)
+
 
 ;map1 = mrdfits("./inmaps/I1_M31.EW.big_mosaic.fits", 0, head1)
 ;map2 = mrdfits("./inmaps/I1_M31.NS.noCRs_mosaic.fits", 0, head2)
@@ -105,5 +112,5 @@ endfor
 mag = flxconv(flx, scale, ch)
 mag_err = 2.5 * alog10( flx_err/flx + 1 )
 
-forprint, davg, mag, mag_err, text=outputname, /nocomment
+;forprint, davg, mag, mag_err, text=outputname, /nocomment
 end

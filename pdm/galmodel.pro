@@ -1,12 +1,10 @@
-mag4shift = 19
 R_s = 30d ; kpc
 scale = 60d / 206265d * 785d
 
-readcol, '~/Projects/project_80032/flx.prt', rx, fx, sfx
+readcol, '~/Projects/project_80032/deproj/flx.prt', rx, fx, sfx
 rx = rx * scale
 
 readcol, './fitpar.dat', n, R_e, mu_e, R_d,  mu_0, alpha, mu_s, a_h, comment='#'
-model_mag = dblarr(n_elements(rx), n_elements(n))
 
 for i = 0, n_elements(n)-1 do begin
 	bpar = [mu2i(mu_e[i]), R_e[i], n[i]]
@@ -17,11 +15,10 @@ for i = 0, n_elements(n)-1 do begin
 	disk = expdisk(rx, dpar)
 	halo = powhalo(rx, hpar)
 	model = bulge + disk + halo
-
+	print, i, model, i2mu(model)
 	forprint, rx/scale, i2mu(model), text=string(i), /nocomm
 endfor
 
-stop
 @colors_kc
 !p.font=-1
 !p.thick=5.8
@@ -33,22 +30,19 @@ cgerase & multiplot, [2,1], mxtitle='!17R !6[!17kpc!6]', $
 mxtitoffset=2, mytitoffset=1, $
 mytitle='!7l !6[!17mag arcsec$\up-2$!6]!17', mxtitsize=2, mytitsize=2
 
-cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', $
+cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', /buffer, $
 err_yhigh=sfx, err_ylow=sfx, yrange=[33,12], xrange=[0.003,60], /xlog
-
-cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
-err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
-
-
-cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
-err_ylow=dmag4, err_yhigh=dmag4
-cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
-cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
-cgplot, rx, model_mag[*,2], /overplot, color='plum'
-cgplot, rx, model_mag[*,3], /overplot, color='maroon'
-cgplot, rx, i2mu(bulge), color='black', linestyle=2, /overplot
-cgplot, rx, i2mu(disk), color='black', linestyle=2, /overplot
-cgplot, rx, i2mu(halo), color='black', linestyle=2, /overplot
+;cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
+;err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
+;cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
+;err_ylow=dmag4, err_yhigh=dmag4
+;cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
+;cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
+;cgplot, rx, model_mag[*,2], /overplot, color='plum'
+;cgplot, rx, model_mag[*,3], /overplot, color='maroon'
+;cgplot, rx, i2mu(bulge), color='black', linestyle=2, /overplot
+;cgplot, rx, i2mu(disk), color='black', linestyle=2, /overplot
+;cgplot, rx, i2mu(halo), color='black', linestyle=2, /overplot
 
 ;cglegend, title=['Major (NE)','Minor (SE)'], psym=[4,4], $
 ;color=['yellow','cyan'], location=[3.7,12.7], vspace=2.0, $
@@ -60,17 +54,17 @@ cgtext, 3.5, 31, 'Bulge'
 multiplot
 cgplot, rx, fx+(model_mag[27,0]-fx[27]), psym=4, color='slate gray', $
 err_yhigh=sfx, err_ylow=sfx, yrange=[33,12], xrange=[-1.5,50]
-cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
-err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
-cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
-err_ylow=dmag4, err_yhigh=dmag4
-cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
-cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
-cgplot, rx, model_mag[*,2], /overplot, color='plum'
-cgplot, rx, model_mag[*,3], /overplot, color='maroon'
-cgplot, rx, i2mu(bulge), color='black', linestyle=2, /overplot
-cgplot, rx, i2mu(disk), color='black', linestyle=2, /overplot
-cgplot, rx, i2mu(halo), color='black', linestyle=2, /overplot
+;cgplot, ry, fy+(model_mag[7,0]-fy[7]), psym=4, $
+;err_yhigh=sfy, err_ylow=sfy, /overplot, color='Gold'
+;cgplot, d4, mag4+(model_mag[27,0]-fx[27])+mag4shift, psym=4, color='red', /overplot, $
+;err_ylow=dmag4, err_yhigh=dmag4
+;cgplot, rx, model_mag[*,0], /overplot, color='dark slate blue'
+;cgplot, rx, model_mag[*,1], /overplot, color='cornflower blue'
+;cgplot, rx, model_mag[*,2], /overplot, color='plum'
+;cgplot, rx, model_mag[*,3], /overplot, color='maroon'
+;cgplot, rx, i2mu(bulge), color='black', linestyle=2, /overplot
+;cgplot, rx, i2mu(disk), color='black', linestyle=2, /overplot
+;cgplot, rx, i2mu(halo), color='black', linestyle=2, /overplot
 
 cglegend, title=['NE (Wedge cut)','SE (Wedge cut)', 'Radial (Star count)'], psym=[4,4,4], $
 color=['slate gray','gold', 'red'], location=[27.3,12.7], vspace=2.0, $

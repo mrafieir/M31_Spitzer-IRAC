@@ -2,10 +2,29 @@
 ; containing median values of 100x100 pixels
 
 ; read the mask (0s and 1s)
-mask = mrdfits('~/Projects/project_80032/NEW/mask_I1NS.fits')
-; read the background map (i.e. raw map masked by the mask above)
-bg = mrdfits('~/Projects/project_80032/NEW/bg_I1NS.fits', 0, header)
+;mask = mrdfits('~/Projects/project_80032/NEW/mask_I1NS.fits')
+mask = mrdfits('~/Projects/project_80032/NEW/IRAC1_EW/I1EW_mask.fits')
 
+; read the background map (i.e. raw map masked by the mask above)
+;bg = mrdfits('~/Projects/project_80032/NEW/45maps/I2_M31.NS.noCRs_mosaic.fits', 0, header)
+bg = mrdfits('~/Projects/project_80032/NEW/45maps/I2_M31.EW.big_mosaic.fits', 0, header)
+
+;hits1 = mrdfits("~/Projects/project_80032/NEW/I1_M31.NS.noCRs_mosaic_cov.fits")
+hits1 = mrdfits("~/Projects/project_80032/NEW/I1_M31.EW.big_mosaic_cov.fits")
+nans_ind = where(finite(hits1, /nan) or hits1 le 0)
+hits1[nans_ind] = !VALUES.F_NAN
+hits1[where(hits1 gt 0)] = 1d
+
+;hits = mrdfits("~/Projects/project_80032/NEW/45maps/I2_M31.NS.noCRs_mosaic_cov.fits")
+hits = mrdfits("~/Projects/project_80032/NEW/45maps/I2_M31.EW.big_mosaic_cov.fits")
+nans_ind = where(finite(hits, /nan) or hits le 0)
+hits[nans_ind] = !VALUES.F_NAN 
+hits[where(hits gt 0)] = 1d
+
+mask = mask * hits * hits1
+bg = bg * mask
+
+;********************
 ; extract map dimensions 
 dims = size(bg, /dim)
 nx = dims[0] & ny = dims[1]
@@ -61,8 +80,12 @@ endfor
 ; extra
 ; after inspecting the result, we find some areas that could be filled in
 ; with the mean of their neighbourhood..
-readcol, '~/Projects/project_80032/cats/mask_data/I1ns_extrapos.dat', $
-	xi, xf, yi, yf, comment='#'
+
+;readcol, '~/Projects/project_80032/cats/mask_data/I1ns_extrapos.dat', $
+;	xi, xf, yi, yf, comment='#'
+readcol, '~/Projects/project_80032/cats/mask_data/I1ew_extrapos.dat', $
+        xi, xf, yi, yf, comment='#'
+
 
 xi = fix(xi) & xf = fix(xf) & yi = fix(yi) & yf = fix(yf)
 
@@ -80,5 +103,6 @@ xi = fix(xi) & xf = fix(xf) & yi = fix(yi) & yf = fix(yf)
 print, z, mean_a
  endfor
 
-fxwrite, '~/Projects/project_80032/NEW/clean_I1NS.fits', header, float(bg)
+;fxwrite, '~/Projects/project_80032/NEW/45maps/clean_I1NS.fits', header, float(bg)
+fxwrite, '~/Projects/project_80032/NEW/45maps/clean_I1EW.fits', header, float(bg)
 end
