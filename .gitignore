@@ -1,3 +1,6 @@
+*.zip
+/Orion_bck/
+/mkmaps/
 *.swp
 *.fits
 *.prt
