@@ -17,10 +17,10 @@ device, filename="fig7.eps", encapsulated=1, /cmyk, xsize=40, ysize=40
 cgplot, color, i, $
 xtitle='!6g-i', ytitle='i', $
 xrange=[-1.5,4.5], yrange=[25,16], $
-psym=16, symsize=0.3, color='cyan'
+psym=16, symsize=0.3, color='black'
 
 cgplot, color2, i2, $
-psym=16, symsize=0.5, color='gold', /overplot
+psym=7, symsize=0.4, color='dark gray', /overplot
 
 data = hist_2d(color, i, bin1=0.1, bin2=0.1)
 sdata = size(data, /dim)
@@ -30,7 +30,7 @@ x = findgen(sdata[0])/10+min(color)
 contourLevels = cgConLevels(data, NLevels=5)
 
 cgContour, data, x, y, levels=contourLevels, $
-label=0, c_charthick=8, Color='blue', c_charsize=3.5, /overplot
+label=0, c_charthick=8, Color='black', c_charsize=3.5, /overplot
 
 data = hist_2d(color2, i2, bin1=0.1, bin2=0.1)
 sdata = size(data, /dim)
@@ -40,8 +40,8 @@ x = findgen(sdata[0])/10+min(color2)
 contourLevels = cgConLevels(data, NLevels=7)
 
 cgContour, data, x, y, levels=contourLevels, $
-label=0, Color='red', c_charthick=8, c_charsize=3.5, /overplot
+label=0, Color='medium gray', c_charthick=8, c_charsize=3.5, /overplot
 
 device, /close
-cgps2raster, 'fig7.eps', /png, width=3000
+;cgps2raster, 'fig7.eps', /png, width=3000
 end

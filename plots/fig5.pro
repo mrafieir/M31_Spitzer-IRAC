@@ -28,8 +28,12 @@ cgplot, i11-i12, i12+dm, /overplot, linestyle=3, thick=15, color='cyan'
 cgplot, i21-i22, i22+dm, /overplot, linestyle=0, thick=15, color='yellow'
 cgplot, i31-i32, i32+dm, /overplot, linestyle=5, thick=15, color='red'
 
+cglegend, title=['!61 Gyr', '3 Gyr', '10 Gyr'], linestyle=[3,0,5], $
+color=['cyan','yellow','red'], location=[1.25,10.1], $
+thick=15, charthick=8, charsize=3.8, vspace=5, /data, /addcmd
+
 device, /close
 
-cgps2raster, 'fig5.eps', /png, width=800
+;cgps2raster, 'fig5.eps', /png, width=800
 
 end

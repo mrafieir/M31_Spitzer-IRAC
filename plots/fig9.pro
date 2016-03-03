@@ -17,13 +17,13 @@ ind3 = where(r1 gt 90)
 readcol, './dats/avgprof.dat', r2, f2, f2s, format='d,d,d', comm='#'
 r2 = r2 / 60d
 
-!p.thick=7
-!x.thick=10
-!y.thick=10
-!p.charthick=9
+!p.thick=5.5
+!x.thick=8
+!y.thick=8
+!p.charthick=6
 !p.font=-1
 !p.charsize=2.4
-charbar=2.8
+charbar=2.4
 sg = 2.5
 set_plot, 'ps'
 device, filename="fig9.eps", encapsulated=1, /cmyk, xsize=40, ysize=40
@@ -35,7 +35,7 @@ mxtitoffset=4.2, mytitoffset=4.9;, /doyaxis
 multiplot
 multiplot
 ; avg prof	
-	cgplot, r2, f2, linestyle=5, color='cyan', thick=14, $
+	cgplot, r2, f2, linestyle=5, color='gray', thick=14, $
 	xrange=[xmin1,xmax1], yrange=[ymax, ymin], /xlog, xtickf='(a1)', xstyle=9, $
 	ytickf='(a1)'
 	cgtext, 0.0025, 20, textoidl('\mu [mag arcsec^{-2}]'), alignment=0.5, $
@@ -50,17 +50,17 @@ multiplot
 ; red line & top axis
 	indred = where(r1 lt 200 and r1 gt 4, countred)
 	indred1 = r1[indred[0]]
-	cgarrow, indred1, 26, indred1, 24.5, /solid, /data, thick=10, hthick=0.2, color='red'
-	cgarrow, indred1, 26, indred1, 27.5, /solid, /data, thick=10, hthick=0.2, color='red' 
+	cgarrow, indred1, 26, indred1, 24.5, /solid, /data, thick=8, hthick=1, color='black'
+	cgarrow, indred1, 26, indred1, 27.5, /solid, /data, thick=8, hthick=1, color='black' 
 	
-	cgplot, r1[indred], dblarr(countred)+26, linstyle=2, color='red', $
-	thick=10, /overplot
+	cgplot, r1[indred], dblarr(countred)+26, linstyle=2, color='black', $
+	thick=8, /overplot
 
 ; dat points
 	cgplot, r1[ind1], f1[ind1], psym=4, symsize=sg, color='black', $
 	err_yhigh=f1s[ind1], err_ylow=f1s[ind1], err_width=0, /overplot
 	
-	cgplot, r1[ind2], f1[ind2], psym=4, color='red', symsize=sg, /overplot
+	cgplot, r1[ind2], f1[ind2], psym=4, color='medium gray', symsize=sg, /overplot
 	
 	cgplot, r1[ind3], f1[ind3], psym=6, color='black', symsize=sg, $
 	err_yhigh=f1s[ind3], err_ylow=f1s[ind3], err_width=0, /overplot
@@ -72,7 +72,7 @@ multiplot
 
 multiplot
 ; avg prof
-	cgplot, r2, f2, linestyle=5, color='cyan', thick=10, $
+	cgplot, r2, f2, linestyle=5, color='gray', thick=10, $
 	xrange=[xmin2,xmax2], yrange=[ymax, ymin], xtickf='(a1)', xstyle=9
 
 	labels = ['0', '50', '100', '150', '200']
@@ -82,7 +82,7 @@ multiplot
 	cgplot, r1[ind1], f1[ind1], psym=4, symsize=sg, color='black', $
 	err_yhigh=f1s[ind1], err_ylow=f1s[ind1], err_width=0, /overplot
 
-	cgplot, r1[ind2], f1[ind2], psym=4, symsize=sg, color='red', /overplot
+	cgplot, r1[ind2], f1[ind2], psym=4, symsize=sg, color='medium gray', /overplot
 	
 	cgplot, r1[ind3], f1[ind3], psym=6, symsize=sg, color='black', $
 	err_yhigh=f1s[ind3], err_ylow=f1s[ind3], err_width=0, /overplot
