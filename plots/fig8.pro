@@ -27,7 +27,9 @@ c_shift = 0
 color_scale = bytscl(p0[ind]) + c_shift
 ;color_scale[where(color_scale gt 255)] = fix(255)
 
+cgplots, cl[ind], i2[ind], psym=16, symsize=0.4, color='dark gray'
 cgplots, cl[ind], i2[ind], psym=16, symsize=0.3, color=color_scale
+
 x = (indgen(2000)-1000)/400d
 cgplot, x, 14.1-x, linestyle=5, /overplot
 ;cgplot, x, 15-x, linstyle=0, /overplot
